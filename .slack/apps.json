@@ -1,0 +1,11 @@
+{
+  "apps": {
+    "T02E3PCPJ": {
+      "app_id": "A05SQDTHSTC",
+      "IsDev": false,
+      "team_domain": "shippit",
+      "team_id": "T02E3PCPJ"
+    }
+  },
+  "default": "shippit"
+}
