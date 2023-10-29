@@ -1,9 +1,19 @@
 import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
-import { format } from "https://deno.land/std@0.91.0/datetime/mod.ts";
 import { get_email, get_oncall_ids } from "../pd.ts";
 
 const oncalls = async (schedule_ids: string, external_token: string) => {
-  const today = format(new Date(), "yyyy-MM-ddTHH:mm");
+  // need to get the datetime in correct timezone
+  const date = new Date().toLocaleString("en-AU", {
+    timeZone: "Australia/Sydney",
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: false,
+  });
+  const pattern = /(\d{2})\/(\d{2})\/(\d{4}),\s+(\d{2}):(\d{2})/;
+  const today = date.replace(pattern, "$3-$2-$1T$4:$5");
 
   //schedule_ids = "PVVPJY7,P845H43";
   const ids: string[] = await get_oncall_ids(
@@ -58,6 +68,7 @@ export default SlackFunction(
     // Get the token:
     const tokenResponse = await client.apps.auth.external.get({
       external_token_id: inputs.pagerdutyAccessTokenId,
+      force_refresh: true,
     });
     if (tokenResponse.error) {
       const error =
