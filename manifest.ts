@@ -2,6 +2,8 @@ import { DefineOAuth2Provider, Manifest, Schema } from "deno-slack-sdk/mod.ts";
 
 import { AddOnCalls } from "./functions/usergroup.ts";
 import { GetOnCalls } from "./functions/incident.ts";
+import { MarkdownMessage } from "./functions/markdown_message.ts";
+
 //import { IncidentWorkflow } from "./workflows/incident_work.ts";
 
 // Define a new OAuth2 provider
@@ -33,10 +35,10 @@ const PagerDutyProvider = DefineOAuth2Provider({
  * https://api.slack.com/future/manifest
  */
 export default Manifest({
-  name: "ship-down",
+  name: "ship-down-bot",
   description: "A slack integration with PagerDuty for Shippit Down",
   icon: "assets/alien.png",
-  functions: [GetOnCalls, AddOnCalls],
+  functions: [GetOnCalls, AddOnCalls, MarkdownMessage],
   workflows: [], //GetOnCallsIncidentWorkflow],
   outgoingDomains: ["api.pagerduty.com"],
   botScopes: [
